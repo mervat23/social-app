@@ -3,7 +3,7 @@ import { Navigate } from "react-router-dom";
 
 const ProtectedRoute = ({ children }: { children: ReactNode }) => {
   if (localStorage.getItem("token") == null) {
-    return <Navigate to={"/login"} />;
+    return <Navigate to={"/register"} />;
   }
   return <>{children}</>;
 };
