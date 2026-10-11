@@ -1,0 +1,52 @@
+import React, { useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { authContext } from "./../../Context/AuthContext";
+
+const Navbar = () => {
+  const { token, logoutContext } = useContext(authContext);
+
+  const Navigate = useNavigate();
+
+  function logout() {
+    logoutContext();
+    Navigate("/login");
+  }
+
+  return (
+    <>
+      <div className="py-5 shadow-2xl">
+        <div className="w-[80%] mx-auto">
+          <ul className="w-3/4 mx-auto flex justify-between items-center">
+            {token ? (
+              <>
+                <li>
+                  <Link to="/">Home</Link>
+                </li>
+                <li>
+                  <Link to="/profile">Profile</Link>
+                </li>
+                <li>
+                  <Link to="/changePassword">Change Password</Link>
+                </li>
+                <li>
+                  <button onClick={logout}>Logout</button>
+                </li>
+              </>
+            ) : (
+              <>
+                <li>
+                  <Link to="/login">login</Link>
+                </li>
+                <li>
+                  <Link to="/register">register</Link>
+                </li>
+              </>
+            )}
+          </ul>
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default Navbar;
