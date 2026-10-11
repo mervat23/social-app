@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Button, Input, Typography } from "@heroui/react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -6,16 +6,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-
-type Inputs = {
-  name: string;
-  username: string;
-  email: string;
-  dateOfBirth: string;
-  gender: string;
-  password: string;
-  rePassword: string;
-};
 
 const Register = () => {
   const navigate = useNavigate();
@@ -68,27 +58,23 @@ const Register = () => {
   const {
     register,
     handleSubmit,
-    setError,
-    getValues,
-    watch,
     formState: { touchedFields, errors },
-  } = useForm<Inputs>({
+  } = useForm<z.input<typeof schema>, unknown, z.output<typeof schema>>({
     defaultValues: {
       name: "",
       username: "",
       email: "",
       dateOfBirth: "",
-      gender: "",
+      gender: undefined,
       password: "",
       rePassword: "",
     },
     resolver: zodResolver(schema),
   });
-
-  async function signup(values: Inputs) {
+  async function signup(values: z.output<typeof schema>) {
     setIsLoading(true);
     try {
-      const {data} = await axios.post(
+      const { data } = await axios.post(
         "https://route-posts.routemisr.com/users/signup",
         values,
         {
@@ -101,7 +87,11 @@ const Register = () => {
       toast.success(data.message);
       navigate("/login");
     } catch (e) {
-      toast.error(e.response.data.message);
+      if (axios.isAxiosError(e)) {
+        toast.error(e.response?.data?.message || "Something went wrong");
+      } else {
+        toast.error("Something went wrong");
+      }
       setIsLoading(false);
     }
   }

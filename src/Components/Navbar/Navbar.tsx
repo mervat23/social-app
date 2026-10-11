@@ -1,10 +1,15 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { authContext } from "./../../Context/AuthContext";
 
 const Navbar = () => {
-  const { token, logoutContext } = useContext(authContext);
+  const context = useContext(authContext);
 
+  if (!context) {
+    throw new Error("Navbar must be used within AuthContextProvider");
+  }
+
+  const { token, logoutContext } = context;
   const Navigate = useNavigate();
 
   function logout() {

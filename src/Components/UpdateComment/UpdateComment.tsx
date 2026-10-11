@@ -1,37 +1,35 @@
-import { TextArea, Button, toast } from '@heroui/react'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import axios from 'axios'
-import { useRef, useState } from 'react'
-import type { Comment } from '../../Interfaces/CommentInterface'
-
+import { TextArea, Button } from "@heroui/react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
+import { useRef, useState } from "react";
+import type { Comment } from "../../Interfaces/CommentInterface";
+import toast from "react-hot-toast";
 const UpdateComment = ({
   postId,
   comment,
-  onClose
+  onClose,
 }: {
-  postId: string
-  comment: Comment
-  onClose: () => void
+  postId: string;
+  comment: Comment;
+  onClose: () => void;
 }) => {
+  const queryClient = useQueryClient();
 
-  const queryClient = useQueryClient()
+  const [imgSrc, setImgSrc] = useState(comment.image || null);
+  const [img, setImg] = useState<File | null>(null);
 
-  const [imgSrc, setImgSrc] = useState(comment.image || null)
-  const [img, setImg] = useState<File | null>(null)
-
-  const commentContent = useRef<HTMLTextAreaElement>(null)
-  const commentImage = useRef<HTMLInputElement>(null)
+  const commentContent = useRef<HTMLTextAreaElement>(null);
+  const commentImage = useRef<HTMLInputElement>(null);
 
   function updateComment() {
-
-    const formData = new FormData()
+    const formData = new FormData();
 
     if (commentContent.current?.value) {
-      formData.append('content', commentContent.current.value)
+      formData.append("content", commentContent.current.value);
     }
 
     if (img) {
-      formData.append('image', img)
+      formData.append("image", img);
     }
 
     return axios.put(
@@ -39,70 +37,60 @@ const UpdateComment = ({
       formData,
       {
         headers: {
-          Authorization: 'Bearer ' + localStorage.getItem('token')
-        }
-      }
-    )
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      },
+    );
   }
 
   const { isPending, mutate } = useMutation({
-
     mutationFn: updateComment,
 
     onSuccess: (data) => {
-
-      toast.success(data.data.message)
-
-      queryClient.invalidateQueries({
-        queryKey: ['comments', postId]
-      })
+      toast.success(data.data.message);
 
       queryClient.invalidateQueries({
-        queryKey: ['Posts']
-      })
+        queryKey: ["comments", postId],
+      });
 
       queryClient.invalidateQueries({
-        queryKey: ['UserPost']
-      })
+        queryKey: ["Posts"],
+      });
 
-      onClose()
+      queryClient.invalidateQueries({
+        queryKey: ["UserPost"],
+      });
+
+      onClose();
     },
 
     onError: (error: any) => {
-
-      toast.error(
-        error.response?.data?.message || 'Something went wrong'
-      )
-    }
-  })
+      toast.error(error.response?.data?.message || "Something went wrong");
+    },
+  });
 
   function handleImg() {
-
-    const file = commentImage.current?.files?.[0]
+    const file = commentImage.current?.files?.[0];
 
     if (file) {
+      const url = URL.createObjectURL(file);
 
-      const url = URL.createObjectURL(file)
-
-      setImgSrc(url)
-      setImg(file)
+      setImgSrc(url);
+      setImg(file);
     }
   }
 
   function closeImg() {
-
-    setImgSrc(null)
-    setImg(null)
+    setImgSrc(null);
+    setImg(null);
 
     if (commentImage.current) {
-      commentImage.current.value = ''
+      commentImage.current.value = "";
     }
   }
 
   return (
-
     <div className="bg-blue-100 my-4 p-4">
-
       <TextArea
         ref={commentContent}
         rows={3}
@@ -112,59 +100,42 @@ const UpdateComment = ({
       />
 
       {imgSrc ? (
-
         <div className="my-4">
-
           <i
             onClick={closeImg}
             className="fa-solid fa-xmark cursor-pointer"
           ></i>
 
-          <img
-            src={imgSrc}
-            className="w-1/2"
-            alt=""
-          />
-
+          <img src={imgSrc} className="w-1/2" alt="" />
         </div>
-
       ) : (
-
         <input
           onChange={handleImg}
           ref={commentImage}
           type="file"
           className="my-4"
         />
-
       )}
 
       <div className="flex gap-3">
-
         <Button
           onClick={() => mutate()}
-          disabled={isPending}
+          isDisabled={isPending}
           variant="primary"
         >
           {isPending ? (
             <i className="fa-solid fa-spinner fa-spin"></i>
           ) : (
-            'Update'
+            "Update"
           )}
         </Button>
 
-        <Button
-          onClick={onClose}
-          disabled={isPending}
-          variant="secondary"
-        >
+        <Button onClick={onClose} isDisabled={isPending} variant="secondary">
           Cancel
         </Button>
-
       </div>
-
     </div>
-  )
-}
+  );
+};
 
-export default UpdateComment
+export default UpdateComment;

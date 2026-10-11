@@ -1,7 +1,7 @@
-import { Button, toast } from "@heroui/react";
-import React from "react";
+import { Button } from "@heroui/react";
 import axios from "axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import toast from "react-hot-toast";
 
 const DeleteComment = ({
   postId,
@@ -27,18 +27,23 @@ const DeleteComment = ({
     mutationFn: DeleteComment,
     onSuccess: (data) => {
       toast.success(data.data.message);
-     queryClient.invalidateQueries({
+      queryClient.invalidateQueries({
         queryKey: ["comments", postId],
       });
     },
+
     onError: (error) => {
-      toast.error(error.response.data.message);
+      if (axios.isAxiosError(error)) {
+        toast.error(error.response?.data?.message || "Something went wrong");
+      } else {
+        toast.error("Something went wrong");
+      }
     },
   });
   return (
     <div>
-      <Button variant="danger" onClick={mutate}>
-        Delete
+      <Button variant="danger" onClick={() => mutate()}>
+        {isPending ? "Deleting..." : "Delete"}
       </Button>
     </div>
   );

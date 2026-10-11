@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import { useContext, useState } from "react";
 import { Button, Input, Typography } from "@heroui/react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -14,7 +14,13 @@ type Inputs = {
 };
 
 const Login = () => {
-  const { insertUserToken } = useContext(authContext);
+  const context = useContext(authContext);
+
+  if (!context) {
+    throw new Error("Login must be used within AuthContextProvider");
+  }
+
+  const { insertUserToken } = context;
 
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -60,8 +66,11 @@ const Login = () => {
       toast.success(data.message);
       navigate("/");
     } catch (e) {
-      toast.error(e.response.data.message);
-      setIsLoading(false);
+      if (axios.isAxiosError(e)) {
+        toast.error(e.response?.data?.message || "Something went wrong");
+      } else {
+        toast.error("Something went wrong");
+      }
     }
   }
 

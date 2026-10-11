@@ -1,12 +1,7 @@
-import { useState } from "react";
-import heroImg from "./assets/hero.png";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "./assets/vite.svg";
 import "./App.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Layout from "./Components/Layout/Layout";
 import Home from "./Components/Home/Home";
-// import About from "./Components/About/About";
 import NotFound from "./Components/NotFound/NotFound";
 import Register from "./Components/Register/Register";
 import { Toaster } from "react-hot-toast";
@@ -16,10 +11,9 @@ import ProtectedRoute from "./Components/ProtectedRoute/ProtectedRoute";
 import Profile from "./Components/Profile/Profile";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import PostDetails from "./Components/PostDetails/PostDetails";
-import ChangePassword from './Components/ChangePassword/ChangePassword'
+import ChangePassword from "./Components/ChangePassword/ChangePassword";
 
 function App() {
-  const [count, setCount] = useState(0);
   const router = createBrowserRouter([
     {
       path: "",
@@ -49,7 +43,7 @@ function App() {
             </ProtectedRoute>
           ),
         },
-          {
+        {
           path: "changePassword",
           element: (
             <ProtectedRoute>
@@ -57,7 +51,6 @@ function App() {
             </ProtectedRoute>
           ),
         },
-        // { path: "about", element: <About /> },
         { path: "register", element: <Register /> },
         { path: "login", element: <Login /> },
         { path: "*", element: <NotFound /> },

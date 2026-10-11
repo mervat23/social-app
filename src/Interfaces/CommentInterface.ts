@@ -1,21 +1,20 @@
+export type Comments = Comment[];
 
-export type Comments=Comment[]
-
-export interface Comment{
-    _id:string
-    content?:string
-    image?:string
-    commentCreator:CommentCreator
-    post:string
-    parentComment:any
-    likes:any[]
-    createdAt:string
-    repliesCount:number
+export interface Comment {
+  _id: string;
+  content?: string;
+  image?: string;
+  commentCreator: CommentCreator;
+  post: string;
+  parentComment: any;
+  likes: any[];
+  createdAt: string;
+  repliesCount: number;
 }
 
-export interface CommentCreator{
-    _id:string ,
-    name:string
-    photo:string,
-    username:string
+export interface CommentCreator {
+  _id: string;
+  name: string;
+  photo: string;
+  username: string;
 }
