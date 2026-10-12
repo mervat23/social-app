@@ -86,7 +86,7 @@ const Login = () => {
       </Typography>
       <form
         onSubmit={handleSubmit(signin)}
-        className="w-[60%] mx-auto p-10 shadow-2xl"
+        className="w-full sm:w-[70%] md:w-[60%] mx-auto p-10 shadow-2xl"
       >
         <Input
           id="email"

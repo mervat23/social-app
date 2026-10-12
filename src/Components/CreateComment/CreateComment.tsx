@@ -109,7 +109,9 @@ const CreateComment = ({ id }: { id: string }) => {
             onChange={handleImg}
             ref={commentImage}
             type="file"
-            className="my-4"
+            // className="my-4"
+              className="my-4 w-full min-w-0"
+
           />
         )}
 

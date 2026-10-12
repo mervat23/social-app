@@ -21,7 +21,8 @@ const Postt = ({
   const [isEditing, setIsEditing] = useState(false);
 
   return (
-    <div className="p-5 w-[95%] md:w-[60%] md:mx-auto">
+    <div className="p-5 w-full sm:w-[95%] md:w-[60%] md:mx-auto">
+      {/* Post Container */}
       <div className="posts bg-blue-300 rounded-md p-5 mb-5">
         <div className="post">
           <div className="header flex items-center justify-between mb-5">
@@ -45,7 +46,7 @@ const Postt = ({
             )}
 
             {user === post.user._id && !isEditing ? (
-              <div className="action md:mx-2 lg:mx-0">
+              <div className="action mx-2 md:mx-2 lg:mx-0">
                 <Button onClick={() => setIsEditing(true)}>Update</Button>
               </div>
             ) : null}
