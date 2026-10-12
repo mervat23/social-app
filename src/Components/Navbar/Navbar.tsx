@@ -21,9 +21,7 @@ const Navbar = () => {
     <>
       <div className="py-5 shadow-2xl">
         <div className="w-[95%] md:w-[85%] mx-auto">
-          {/* w-[80%] mx-auto */}
           <ul className="flex flex-wrap justify-center md:justify-between items-center gap-4 md:gap-6">
-            {/* w-3/4 mx-auto flex justify-between items-center */}
             {token ? (
               <>
                 <li>

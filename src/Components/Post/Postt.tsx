@@ -22,10 +22,9 @@ const Postt = ({
 
   return (
     <div className="p-5 w-full sm:w-[95%] md:w-[60%] md:mx-auto">
-      {/* Post Container */}
       <div className="posts bg-blue-300 rounded-md p-5 mb-5">
         <div className="post">
-          <div className="header flex items-center justify-between mb-5">
+          <div className="header flex flex-wrap items-center gap-3 mb-5">
             <div className="flex items-center ">
               <Avatar size="lg">
                 <Avatar.Image alt="lkhh" src={post.user.photo}></Avatar.Image>

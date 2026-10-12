@@ -32,7 +32,6 @@ const CommentHeader = ({ id }: { id: string }) => {
           <div key={idx}>
             <div className="comment mt-3 mb-4 bg-blue-100 rounded-md p-5">
               <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
-                {/* flex justify-between items-center */}
                 <div className="flex items-center ">
                   <Avatar size="lg">
                     <Avatar.Image
